@@ -1,5 +1,5 @@
 export default {
-    
+
     //  Location entity
     Location: `
         scalar Data
@@ -29,7 +29,9 @@ export default {
 
     //  Location queries
     LocationQueries: `
-        getAllLocations: [Location!]!
+        getAllCountries: [Location!]!
+        getStatesOfCountry(country_code: String!): [Location!]!
+        getCitiesOfState(country_code: String!, state_code: String!): [Location!]!
     `,
 
     //  Location mutations

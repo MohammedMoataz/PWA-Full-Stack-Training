@@ -5,9 +5,34 @@ const location = db.location
 export default {
 
     //  Location Queries
-    getAllLocations: async (args, req) => {
+    getAllCountries: async (args, req) => {
         try {
             return await location.findAll()
+        } catch (err) {
+            throw err
+        }
+    },
+
+    getStatesOfCountry: async (args, req) => {
+        try {
+            return await location.findAll({
+                where: {
+                    country_code: args.country_code
+                }
+            })
+        } catch (err) {
+            throw err
+        }
+    },
+
+    getCitiesOfState: async (args, req) => {
+        try {
+            return await location.findAll({
+                where: {
+                    country_code: args.country_code,
+                    state_code: args.state_code
+                }
+            })
         } catch (err) {
             throw err
         }
