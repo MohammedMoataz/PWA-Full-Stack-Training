@@ -1,0 +1,35 @@
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+form {
+  width: 80%;
+}
+
+label,
+input,
+textarea,
+button {
+  display: block;
+  width: 100%;
+  padding: 1%;
+  font-size: calc(7px + 2vmin);
+  margin: 10px 0px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+button {
+  width: 40%;
+  border-radius: 15px;
+  margin: 40px auto;
+}

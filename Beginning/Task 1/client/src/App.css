@@ -1,0 +1,35 @@
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+  flex-direction: row;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  margin: auto;
+  color: white;
+}
+
+input,
+button {
+  margin: 15px 0;
+  color: #282c34;
+  font-size: calc(8px + 2vmin);
+  padding: 1% 2%;
+}
+
+.App-header {
+  display: flex;
+  margin: auto;
+  padding: 4% 0%;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section {
+  display: flex;
+  width: 50%;
+  padding: 3% 0%;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -1,0 +1,41 @@
+.App {
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+nav {
+  z-index: 1024;
+}
+
+#home {
+  background-image: url(./components//shared/assets/background.jpg);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.p-10 {
+  padding: 10%;
+}
+
+img {
+  width: 30px;
+}
+
+ul > li {
+  font-size: large;
+}
+
+.m-page {
+  margin: 2% 0 30% 2%;
+}
+
+.floating-button {
+  z-index: 1024;
+  bottom: 20px;
+  right: 20px;
+}
+
+.p-page {
+  padding: 17% 0% 0%;
+}

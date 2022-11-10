@@ -1,0 +1,71 @@
+.App {
+  font-size: calc(10px + 2vmin);
+}
+
+nav {
+  z-index: 1024;
+}
+
+#home {
+  background-image: url(.//assets/background.png);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.p-10 {
+  padding: 10%;
+}
+
+img {
+  width: 30px;
+}
+
+ul > li {
+  font-size: large;
+}
+
+.m-page {
+  margin: 2% 0 30% 2%;
+}
+
+.floating-button {
+  z-index: 1024;
+  bottom: 20px;
+  right: 20px;
+}
+
+form {
+  width: 80%;
+}
+
+label,
+input,
+textarea,
+button {
+  display: block;
+  width: 100%;
+  padding: 1%;
+  font-size: calc(7px + 2vmin);
+  margin: 10px 0px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+button {
+  width: 40%;
+  border-radius: 15px;
+  margin: 40px auto;
+}
+
+*::selection {
+  background-color: #FFC107;
+  color: #1e1e1e;
+}
+
+::-webkit-input-placeholder { /* Edge */
+  color: #ffffff;
+}
