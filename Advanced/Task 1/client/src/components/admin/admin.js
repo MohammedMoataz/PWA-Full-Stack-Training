@@ -54,7 +54,7 @@ export const Admin = () => {
             body: JSON.stringify({ query: mutation })
         }).then(response => {
             if (response.status !== 200 || response.status !== 201)
-                navigate('/locations')
+                navigate('/regions')
 
             return response.json()
         })

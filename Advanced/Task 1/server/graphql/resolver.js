@@ -1,3 +1,3 @@
-import resolvers from './resolvers/location.js'
+import resolvers from './resolvers/region.js'
 
 export default { ...resolvers, }

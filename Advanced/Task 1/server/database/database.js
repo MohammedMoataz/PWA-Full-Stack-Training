@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 import { config } from 'dotenv'
 
-import Location from './models/location.js'
+import Region from './models/region.js'
 
 config()
 
@@ -24,6 +24,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
-db.location = Location(sequelize, Sequelize)
+db.region = Region(sequelize, Sequelize)
 
 export default db

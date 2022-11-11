@@ -1,17 +1,17 @@
 import { buildSchema } from "graphql"
 
-import locationSchema from './schemas/location.js'
+import regionSchema from './schemas/region.js'
 
 export default buildSchema(`
-    ${locationSchema.Location}
-    ${locationSchema.LocationInput}
+    ${regionSchema.Region}
+    ${regionSchema.RegionInput}
 
     type RootQuery {
-        ${locationSchema.LocationQueries}
+        ${regionSchema.RegionQueries}
     }
     
     type RootMutation {
-        ${locationSchema.LocationMutations}
+        ${regionSchema.RegionMutations}
     }
 
     schema {
