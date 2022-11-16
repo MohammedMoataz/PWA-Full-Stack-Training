@@ -1,106 +1,68 @@
+import { useQuery, gql } from "@apollo/client"
 import React, { useEffect, useState } from "react"
-import { Country, State, City } from 'country-state-city'
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 
 export const Admin = () => {
     const [country, setCountry] = useState({})
-    const [state, setState] = useState({})
-    const [city, setCity] = useState({})
+    const [countries, setCountries] = useState([])
+    const [added, setAdded] = useState({})
 
-    const [states, setStates] = useState([])
-    const [cities, setCities] = useState([])
+    const getCountriesQuery = gql`{
+        getRegions
+      }`
+    let { data, loading, error } = useQuery(getCountriesQuery)
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     useEffect(() => {
-        if (country !== undefined)
-            setStates(<datalist id="states">
-                {State
-                    .getStatesOfCountry(country.isoCode)
-                    .map(state => <option key={state.isoCode}>{state.isoCode}: {state.name}</option>)}
-            </datalist>)
+        added
+            ? setCountries(Array.from(countries).p     ush(added))
+            : setCountries(data.getRegions)
 
-        if (country !== undefined && state !== undefined)
-            setCities(<datalist id="cities">
-                {City
-                    .getCitiesOfState(country.isoCode, state.isoCode)
-                    .map(city => <option key={city.name}>{city.name}</option>)}
-            </datalist>)
+    }, [])
 
-        console.log('country: ', country)
-        console.log('state: ', state)
-        console.log('city: ', city)
-    }, [city, country, state])
+    if (loading) return "Loading..."
+    if (error) console.log(error.message)
 
     const handleSubmit = async e => {
         e.preventDefault()
 
-        const mutation = `mutation{
-            addLocation(locationInput: {
-              country_name: "${country.name}"
-              country_code: "${country.isoCode}"
-              state_name: "${state.name}"
-              state_code: "${state.isoCode}"
-              city_name: "${city.name}"
-              selected: true
-            }) {
+        const addCountryMutation = `mutation {
+            addRegion(regionInput: {region: "${country}"}) {
               id
+              p_id
+              region
             }
           }`
 
         await fetch('http://localhost:4000/graphql', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query: mutation })
-        }).then(response => {
-            if (response.status !== 200 || response.status !== 201)
-                navigate('/regions')
-
-            return response.json()
-        })
-            .then(jsonResponse => console.log(jsonResponse.data.addLocation))
+            body: JSON.stringify({ query: addCountryMutation })
+        }).then(response => response.json())
+            .then(jsonResponse => setAdded(jsonResponse.data.addRegion.region))
             .catch(err => console.log(err))
     }
 
-    const handleCountryChange = e => setCountry(Country.getCountryByCode(e.target.value.split(':')[0]))
-
-    const handleStateChange = e => setState(State.getStateByCodeAndCountry(e.target.value.split(':')[0], country.isoCode))
-
-    const handleCityChnage = e => setCity(City.getCitiesOfState(country.isoCode, state.isoCode).filter(city => city.name === e.target.value).at(0))
+    const handleCountryChange = e => setCountry(e.target.value)
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="mt-5">
+            <form onSubmit={handleSubmit} >
                 <input
-                    list="countries"
                     name="country"
                     id="country"
-                    onChange={handleCountryChange}
-                ></input>
-                <datalist id="countries">
-                    {Country
-                        .getAllCountries()
-                        .map(country => <option key={country.isoCode}>{country.isoCode}: {country.name}</option>)}
-                </datalist>
+                    placeholder="Add country name"
+                    onChange={handleCountryChange} />
 
-                <input
-                    list="states"
-                    name="state"
-                    id="state"
-                    onChange={handleStateChange}
-                ></input>
-                {states}
-
-                <input
-                    list="cities"
-                    name="city"
-                    id="city"
-                    onChange={handleCityChnage}
-                ></input>
-                {cities}
-
-                <button className="submit-btn">Submit</button>
+                <button>Add Country</button>
             </form>
+
+            <div className="countries">
+                {Array.from(countries).map(country =>
+                    <button key={country}>{country}</button>
+                )}
+            </div>
         </div>
     )
 }

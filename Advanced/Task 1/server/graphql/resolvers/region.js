@@ -8,7 +8,9 @@ export default {
     getRegions: async (args, req) => {
         try {
             let parent_id = args.parent_region
-                ? await REGION.findOne({ where: { region: args.parent_region } })
+                ? await REGION.findOne({
+                    where: { region: args.parent_region }
+                })
                 : 1
 
             if (isNaN(parent_id))
@@ -70,4 +72,5 @@ export default {
             throw err
         }
     }
+    
 }
