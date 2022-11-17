@@ -1,25 +1,14 @@
 import { useQuery, gql } from "@apollo/client"
-import React, { useEffect, useState } from "react"
-// import { useNavigate } from "react-router-dom"
+import React, { useState } from "react"
 
 export const Admin = () => {
     const [country, setCountry] = useState({})
     const [countries, setCountries] = useState([])
-    const [added, setAdded] = useState({})
 
     const getCountriesQuery = gql`{
         getRegions
       }`
     let { data, loading, error } = useQuery(getCountriesQuery)
-
-    // const navigate = useNavigate()
-
-    useEffect(() => {
-        added
-            ? setCountries(Array.from(countries).p     ush(added))
-            : setCountries(data.getRegions)
-
-    }, [])
 
     if (loading) return "Loading..."
     if (error) console.log(error.message)
@@ -40,11 +29,12 @@ export const Admin = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ query: addCountryMutation })
         }).then(response => response.json())
-            .then(jsonResponse => setAdded(jsonResponse.data.addRegion.region))
             .catch(err => console.log(err))
     }
 
     const handleCountryChange = e => setCountry(e.target.value)
+
+    const showCountries = () => setCountries(data.getRegions)
 
     return (
         <div>
@@ -58,8 +48,9 @@ export const Admin = () => {
                 <button>Add Country</button>
             </form>
 
+            <button onClick={showCountries}>Show Countries</button>
             <div className="countries">
-                {Array.from(countries).map(country =>
+                {countries.map(country =>
                     <button key={country}>{country}</button>
                 )}
             </div>

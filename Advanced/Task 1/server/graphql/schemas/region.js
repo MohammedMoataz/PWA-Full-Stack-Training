@@ -14,18 +14,18 @@ export default {
     //  Region input
     RegionInput: `
         input RegionInput {
-            parent_region: String
+            parent_region: String!
             region: String!
         }
     `,
 
     //  Region queries
     RegionQueries: `
-        getRegions(parent_region: String): [String!]!
+        getRegions(parent_region: String!): [String!]!
     `,
 
     //  Region mutations
     RegionMutations: `
-        addRegion(regionInput: RegionInput): Region
+        addRegion(regionInput: RegionInput!): Region
     `
 }
