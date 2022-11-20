@@ -1,59 +1,100 @@
 import { useQuery, gql } from "@apollo/client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 export const Admin = () => {
-    const [country, setCountry] = useState({})
-    const [countries, setCountries] = useState([])
+    const [region, setRegion] = useState("")
+    const [parentRegion, setParentRegion] = useState("root")
+    const [regions, setRegions] = useState([])
 
-    const getCountriesQuery = gql`{
-        getRegions
+    let getRegionsQuery = gql`{
+        getRegions(parent_region: "${parentRegion}") {
+          id
+          p_id
+          region
+        }
       }`
-    let { data, loading, error } = useQuery(getCountriesQuery)
+    let addRegionMutation = `mutation {
+        addRegion(regionInput: {
+          parent_region: "${parentRegion}"
+          region: "${region}"
+        }) {
+          id
+          p_id
+          region
+        }
+      }`
 
-    if (loading) return "Loading..."
-    if (error) console.log(error.message)
+    let { data, refetch } = useQuery(getRegionsQuery)
+
+    useEffect(() => {
+        if (data)
+            setRegions(data.getRegions)
+
+        console.log(region)
+    }, [data, region])
 
     const handleSubmit = async e => {
         e.preventDefault()
 
-        const addCountryMutation = `mutation {
-            addRegion(regionInput: {region: "${country}"}) {
-              id
-              p_id
-              region
-            }
-          }`
-
         await fetch('http://localhost:4000/graphql', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query: addCountryMutation })
-        }).then(response => response.json())
+            body: JSON.stringify({ query: addRegionMutation })
+        })
+            .then(response => response.json())
+            .then(JsonResponse => console.log(JsonResponse))
             .catch(err => console.log(err))
     }
 
-    const handleCountryChange = e => setCountry(e.target.value)
+    const handleRegionChange = e => {
+        setParentRegion(e.target.value)
+        setRegion(e.target.value)
 
-    const showCountries = () => setCountries(data.getRegions)
+        console.log("ParentRegion: ", parentRegion)
+        console.log("region: ", region)
+        refetch().then(res => console.log(res))
+    }
 
     return (
         <div>
             <form onSubmit={handleSubmit} >
                 <input
+                    list="regions"
                     name="country"
                     id="country"
-                    placeholder="Add country name"
-                    onChange={handleCountryChange} />
-
-                <button>Add Country</button>
+                    placeholder="Add Country Name"
+                    onChange={handleRegionChange} />
+                <datalist id="regions">
+                    {regions.map(region => <option key={region.id}>{region.region}</option>)}
+                </datalist>
+                <button>+</button>
             </form>
 
-            <button onClick={showCountries}>Show Countries</button>
-            <div className="countries">
-                {countries.map(country =>
-                    <button key={country}>{country}</button>
-                )}
-            </div>
+            <form onSubmit={handleSubmit} >
+                <input
+                    list="regions"
+                    name="state"
+                    id="state"
+                    placeholder="Add State Name"
+                    onChange={handleRegionChange} />
+                <datalist id="regions">
+                    {regions.map(region => <option key={region.id}>{region.region}</option>)}
+                </datalist>
+                <button>+</button>
+            </form>
+
+            <form onSubmit={handleSubmit} >
+                <input
+                    list="regions"
+                    name="city"
+                    id="city"
+                    placeholder="Add City Name"
+                    onChange={handleRegionChange} />
+                <datalist id="regions">
+                    {regions.map(region => <option key={region.id}>{region.region}</option>)}
+                </datalist>
+                <button>+</button>
+            </form>
         </div>
     )
 }

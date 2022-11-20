@@ -1,11 +1,20 @@
-import './App.css'
+import React from 'react'
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client"
+
 import { Main } from './components/main/main'
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  cache: new InMemoryCache()
+})
 
 const App = () => {
   return (
-    <div className="App">
-      <Main />
-    </div>
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <Main />
+      </ApolloProvider>
+    </React.StrictMode>
   )
 }
 

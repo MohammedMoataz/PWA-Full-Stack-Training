@@ -26,4 +26,4 @@ app.use('/graphql', graphqlHTTP({
 }))
 
 //  http://localhost:4000/
-app.get('/', (req, res) => res.send(`Go to <a href="http://localhost:${PORT}/graphql/"><h1>GraphQl</h1><a/>`))
+app.get('/', (req, res) => res.send(`<h1>Go to <a href="http://localhost:${PORT}/graphql/">GraphQl<a/></h1>`))

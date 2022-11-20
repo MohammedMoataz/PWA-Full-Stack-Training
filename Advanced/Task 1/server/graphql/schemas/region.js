@@ -21,7 +21,7 @@ export default {
 
     //  Region queries
     RegionQueries: `
-        getRegions(parent_region: String!): [String!]!
+        getRegions(parent_region: String!): [Region!]!
     `,
 
     //  Region mutations

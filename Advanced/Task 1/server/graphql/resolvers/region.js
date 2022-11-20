@@ -6,7 +6,12 @@ export default {
 
     //  Region Queries
     getRegions: async (args, req) => {
-        const parent_region = args.parent_region.trim()
+        let parent_region = args.parent_region
+
+        if (typeof (parent_region) !== "string")
+            throw new Error("Region must be String")
+
+        parent_region = parent_region.trim()
 
         let parent_id = (parent_region === "root")
             ? 1
@@ -26,14 +31,20 @@ export default {
         })
             .then(res => res
                 .filter(region => region.dataValues.id > 1)
-                .map(region => region.dataValues.region))
+                .map(region => region.dataValues))
             .catch(err => err)
     },
 
     //  Region Mutations
     addRegion: async (args, req) => {
-        const parent_region = args.regionInput.parent_region.trim()
-        const region = args.regionInput.region.trim()
+        let parent_region = args.regionInput.parent_region
+        let region = args.regionInput.region
+
+        if (typeof (parent_region) !== "string" || typeof (region) !== "string")
+            throw new Error("Region must be String")
+
+        parent_region = parent_region.trim()
+        region = region.trim()
 
         let parent_id = (parent_region === "root")
             ? 1
