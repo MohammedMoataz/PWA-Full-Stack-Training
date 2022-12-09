@@ -1,5 +1,5 @@
 import mysql2 from 'mysql2'
-import {config} from 'dotenv'
+import { config } from 'dotenv'
 
 config() // ALLOWS ENVIRONMENT VARIABLES TO BE SET ON PROCESS.ENV
 

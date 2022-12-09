@@ -4,7 +4,6 @@ import regionSchema from './schemas/region.js'
 
 export default buildSchema(`
     ${regionSchema.Region}
-    ${regionSchema.RegionInput}
 
     type RootQuery {
         ${regionSchema.RegionQueries}

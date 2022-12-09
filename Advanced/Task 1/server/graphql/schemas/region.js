@@ -1,6 +1,6 @@
 export default {
 
-    //  Region entity
+    //  Region Entity
     Region: `
         scalar Data
         
@@ -11,21 +11,15 @@ export default {
         }
     `,
 
-    //  Region input
-    RegionInput: `
-        input RegionInput {
-            parent_region: String!
-            region: String!
-        }
-    `,
-
-    //  Region queries
+    //  Region Queries
     RegionQueries: `
-        getRegions(parent_region: String!): [Region!]!
+        getAll: [Region!]!
+        getAllByParentId(parent_id: Int!): [Region!]!
     `,
 
-    //  Region mutations
+    //  Region Mutations
     RegionMutations: `
-        addRegion(regionInput: RegionInput!): Region
+        add(region: String!, parent_id: Int!): Region
+        update(region: String!, id: Int!): Boolean
     `
 }

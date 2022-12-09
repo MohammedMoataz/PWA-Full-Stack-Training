@@ -5,76 +5,74 @@ const REGION = db.region
 export default {
 
     //  Region Queries
-    getRegions: async (args, req) => {
-        let parent_region = args.parent_region
-
-        if (typeof (parent_region) !== "string")
-            throw new Error("Region must be String")
-
-        parent_region = parent_region.trim()
-
-        let parent_id = (parent_region === "root")
-            ? 1
-            : await REGION.findOne({
-                where: { region: parent_region }
-            })
-                .then(res => res.dataValues.id)
-                .catch(() => 0)
-
-        if (parent_id === 0)
-            throw new Error('Parent region not exists')
-
+    /**
+     * 
+     * @param {Integer} args parent region id
+     * @returns all regions whose parent region id = parent_id, except the 'root' record witch its id = p_id = 1
+     */
+    getAllByParentId: async (args, req) => {
         return await REGION.findAll({
-            where: {
-                p_id: parent_id
-            }
+            where: { p_id: args.parent_id }
         })
+            .then(res => res
+                .filter(region => region.dataValues.id > 1)
+                .map(region => region.dataValues))
+            .catch(err => { throw new Error('Parent region not exists') })
+    },
+
+    /**
+     * 
+     * @returns all regions except the 'root' record witch its id = p_id = 1
+     */
+    getAll: async () => {
+        return await REGION.findAll()
             .then(res => res
                 .filter(region => region.dataValues.id > 1)
                 .map(region => region.dataValues))
             .catch(err => err)
     },
 
-    //  Region Mutations
-    addRegion: async (args, req) => {
-        let parent_region = args.regionInput.parent_region
-        let region = args.regionInput.region
 
-        if (typeof (parent_region) !== "string" || typeof (region) !== "string")
-            throw new Error("Region must be String")
+    /* Region Mutations */
+    /**
+     * 
+     * @param {Object} args - data of the new region
+     * @param {Integer} args.parent_id - new region's parent id
+     * @param {String} args.region - new region name
+     * @returns new added region
+     */
+    add: async (args, req) => {
+        let parent_id = args.parent_id
+        let region = args.region.trim()
 
-        parent_region = parent_region.trim()
-        region = region.trim()
-
-        let parent_id = (parent_region === "root")
-            ? 1
-            : await REGION.findOne({
-                where: {
-                    region: parent_region
-                }
-            })
-                .then(res => res.dataValues.id)
-                .catch(() => {
-                    throw new Error('Parent region not exists')
-                })
-
-        let regionExist = await REGION.findOne({
-            where: {
-                p_id: parent_id,
-                region: region
-            }
-        })
-
-        if (regionExist)
-            throw new Error('Region already exists')
-
-        const newRegion = new REGION({
+        const new_region = new REGION({
             p_id: parent_id,
             region: region
         })
 
-        return await newRegion.save()
-            .catch(err => err)
+        return await new_region.save()
+            .catch(err => console.error(err))
+    },
+
+    /**
+     * 
+     * @param {Object} args - data of the region to be updated
+     * @param {Integer} args.id - region id
+     * @param {String} args.region - region name
+     * @returns if region updated or not
+     */
+    update: async (args, req) => {
+        let id = args.id
+        let region = args.region.trim()
+
+        let isUpdated = await REGION.update({
+            region: region
+        }, {
+            where: { id: id }
+        })
+            .catch(err => console.error(err))
+
+        return isUpdated !== 0
     }
 
 }
