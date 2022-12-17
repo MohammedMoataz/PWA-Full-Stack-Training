@@ -17,7 +17,7 @@ export default {
             .then(res => res
                 .filter(region => region.dataValues.id > 1)
                 .map(region => region.dataValues))
-            .catch(err => { throw new Error('Parent region not exists') })
+            .catch(err => console.log(err))
     },
 
     /**

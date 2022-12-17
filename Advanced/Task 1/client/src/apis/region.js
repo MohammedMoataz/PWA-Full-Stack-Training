@@ -72,8 +72,12 @@ export const update = async (region, id) => {
   return await fetchApi(mutation)
 }
 
-//  body parameter => a query or mutation passing from user
-//  returns response from server after excuting body
+
+/**
+ * 
+ * @param {String} body a query or mutation passing from user
+ * @returns response from server after excuting body - json object
+ */
 const fetchApi = async body => {
   return await fetch('http://localhost:4000/graphql', {
     method: 'POST',

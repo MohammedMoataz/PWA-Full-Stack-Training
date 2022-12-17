@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-    return sequelize.define("region", {
+    return sequelize.define("regions", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
