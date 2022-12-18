@@ -19,7 +19,6 @@ export const User = () => {
         payload: res.data.getAllByParentId
       }))
       .catch(err => console.error(err))
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -69,6 +68,48 @@ export const User = () => {
       .map(element => element.open = false)
   }
 
+  const handleCountryCompletion = (e, state) => {
+    let country = appState.countries.find(country => country.id === state.p_id)
+
+    e.target.checked
+      ? country.length
+        ? country.length++
+        : country.length = appState.states.length
+      : country.length
+        ? country.length--
+        : country.length = appState.states.length - 1
+
+    if (country.length === appState.states.length)
+      country.statue = 'full'
+    else if (country.length === 0)
+      country.statue = 'empty'
+    else
+      country.statue = 'not empty'
+
+    console.log(appState.countries)
+  }
+
+  const handleStateCompletion = (e, city) => {
+    let state = appState.states.find(state => state.id === city.p_id)
+
+    e.target.checked
+      ? state.length
+        ? state.length++
+        : state.length = appState.cities.length
+      : state.length
+        ? state.length--
+        : state.length = appState.cities.length - 1
+
+    if (state.length === appState.cities.length)
+      state.statue = 'full'
+    else if (state.length === 0)
+      state.statue = 'empty'
+    else
+      state.statue = 'not empty'
+
+    console.log(appState.states)
+  }
+
   return (
     <div className="container">
       <div className="top-btn">
@@ -83,7 +124,7 @@ export const User = () => {
             <details className="countries">
               <summary onClick={() => handleOpenStates(country)}>
                 <label className="form-control">
-                  <input type="checkbox" defaultChecked={"checked"} />
+                  <input type="checkbox" name="country" value={`not empty`} defaultChecked={"checked"} />
                   {country.region}
                 </label>
               </summary>
@@ -93,8 +134,8 @@ export const User = () => {
                   <li className="bg-secondary-70 state-control border" key={state.id}>
                     <details className="states">
                       <summary onClick={() => handleOpenCities(state)}>
-                        <label className="form-control">
-                          <input type="checkbox" defaultChecked={"checked"} />
+                        <label className="form-control" onClick={e => handleCountryCompletion(e, state)}>
+                          <input type="checkbox" name="state" value={`not empty`} defaultChecked={"checked"} />
                           {state.region}
                         </label>
                       </summary>
@@ -102,8 +143,8 @@ export const User = () => {
                       <ul>
                         {appState.cities.map(city =>
                           <li className="bg-secondary city-control border" key={city.id}>
-                            <label className="form-control">
-                              <input type="checkbox" defaultChecked={"checked"} />
+                            <label className="form-control" onClick={e => handleStateCompletion(e, city)}>
+                              <input type="checkbox" name="city" value={`full`} defaultChecked={"checked"} />
                               {city.region}
                             </label>
                           </li>

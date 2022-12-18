@@ -12,9 +12,7 @@ export const AppProvider = props => {
         root: { id: 1 },
         countries: [],
         states: [],
-        cities: [],
-        country: {},
-        state: {}
+        cities: []
     }
 
     const [appState, appDispatch] = useReducer(AppReducer, appInitialState)
