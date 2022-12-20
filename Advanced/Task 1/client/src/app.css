@@ -35,10 +35,6 @@
   background-color: #26315966;
 }
 
-.bg-secondary-70 {
-  background-color: #263159b3;
-}
-
 /*  Rest  */
 *,
 *:before,
@@ -69,16 +65,21 @@ body {
 
 .top-btn {
   display: flex;
-  justify-content: space-between;
-  margin: 2% 0%;
+  justify-content: flex-end;
+  margin: 1% 0% 5%;
 }
 
 .top-btn > button {
-  width: 20%;
+  width: 25%;
   font-weight: 600;
   padding: 1.5%;
   border: none;
   font-size: 13pt;
-  border-radius: 35px;
+  border-radius: 40px;
   cursor: pointer;
+}
+
+.top-btn > button:hover {
+  background-color: #123456;
+  color: #ffffff;
 }

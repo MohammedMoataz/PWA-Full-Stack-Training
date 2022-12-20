@@ -1,23 +1,40 @@
 import React, { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { getAllByParentId } from "../../apis/region"
+import { getAll } from "../../apis/region"
 import { AppContext } from "../../contextapi/context/AppContext"
-import * as appActions from "../../contextapi/action/AppAction"
-import "./user.css"
+import * as AppActionType from "../../contextapi/action/AppAction"
+import { List } from "./list"
+import { Button } from "../admin/button"
+import Tree from "./Tree"
+
+import "./css/user.css"
 
 export const User = () => {
   const navigate = useNavigate()
 
   const { appState, appDispatch } = useContext(AppContext)
 
-  //  get all countries at the first rendering
   useEffect(() => {
-    getAllByParentId(appState.root.id)
-      .then(res => appDispatch({
-        type: appActions.GET_ALL_COUNTRIES,
-        payload: res.data.getAllByParentId
+    const tree = new Tree(1, { id: 1, region: "root" })
+
+    getAll()
+      .then(res => res.data.getAll
+        .map(region => tree.insert(
+          region.p_id,
+          region.id,
+          {
+            name: region.region,
+            checked: true,
+            statue: "full"
+          }
+        ))
+      )
+      .then(() => appDispatch({
+        type: AppActionType.GET_ALL,
+        payload: tree
       }))
+      .then(console.log(appState))
       .catch(err => console.error(err))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -25,142 +42,19 @@ export const User = () => {
   //  go to the admin page
   const goBack = () => navigate(-1)
 
-  //  get all countries
-  const reload = async () => await getAllByParentId(appState.root.id)
-    .then(res => appDispatch({
-      type: appActions.GET_ALL_COUNTRIES,
-      payload: res.data.getAllByParentId
-    }))
-    .catch(err => console.error(err))
-
-  //  get states of the selected country
-  const getStates = async country_id => await getAllByParentId(country_id)
-    .then(res => appDispatch({
-      type: appActions.GET_STATES,
-      payload: res.data.getAllByParentId
-    }))
-    .catch(err => console.error(err))
-
-  //  get cities of the selected state
-  const getCities = async state_id => await getAllByParentId(state_id)
-    .then(res => appDispatch({
-      type: appActions.GET_CITIES,
-      payload: res.data.getAllByParentId
-    }))
-    .catch(err => console.error(err))
-
-
-  //  get list of states of the selected country and close other lists if open
-  const handleOpenStates = country => {
-    getStates(country.id)
-
-    Array
-      .from(document.getElementsByClassName('countries'))
-      .map(element => element.open = false)
-  }
-
-  //  get list of cities of the selected state and close other lists if open
-  const handleOpenCities = state => {
-    getCities(state.id)
-
-    Array
-      .from(document.getElementsByClassName('states'))
-      .map(element => element.open = false)
-  }
-
-  const handleCountryCompletion = (e, state) => {
-    let country = appState.countries.find(country => country.id === state.p_id)
-
-    e.target.checked
-      ? country.length
-        ? country.length++
-        : country.length = appState.states.length
-      : country.length
-        ? country.length--
-        : country.length = appState.states.length - 1
-
-    if (country.length === appState.states.length)
-      country.statue = 'full'
-    else if (country.length === 0)
-      country.statue = 'empty'
-    else
-      country.statue = 'not empty'
-
-    console.log(appState.countries)
-  }
-
-  const handleStateCompletion = (e, city) => {
-    let state = appState.states.find(state => state.id === city.p_id)
-
-    e.target.checked
-      ? state.length
-        ? state.length++
-        : state.length = appState.cities.length
-      : state.length
-        ? state.length--
-        : state.length = appState.cities.length - 1
-
-    if (state.length === appState.cities.length)
-      state.statue = 'full'
-    else if (state.length === 0)
-      state.statue = 'empty'
-    else
-      state.statue = 'not empty'
-
-    console.log(appState.states)
-  }
-
   return (
     <div className="container">
       <div className="top-btn">
-        <button className="bg-dark text-light" onClick={reload}>Reload</button>
-        <button className="bg-dark text-light" onClick={goBack}>Manage Location</button>
+        <Button
+          className="bg-dark text-light"
+          action={"Manage Regions"}
+          handleAction={goBack}
+        />
       </div>
 
-      <ul className="tree text-light">
-        {/* --- Countries --- */}
-        {appState.countries.map(country =>
-          <li className="bg-secondary-40 country-control border" key={country.id}>
-            <details className="countries">
-              <summary onClick={() => handleOpenStates(country)}>
-                <label className="form-control">
-                  <input type="checkbox" name="country" value={`not empty`} defaultChecked={"checked"} />
-                  {country.region}
-                </label>
-              </summary>
-              {/* --- States --- */}
-              <ul>
-                {appState.states.map(state =>
-                  <li className="bg-secondary-70 state-control border" key={state.id}>
-                    <details className="states">
-                      <summary onClick={() => handleOpenCities(state)}>
-                        <label className="form-control" onClick={e => handleCountryCompletion(e, state)}>
-                          <input type="checkbox" name="state" value={`not empty`} defaultChecked={"checked"} />
-                          {state.region}
-                        </label>
-                      </summary>
-                      {/* --- Cities --- */}
-                      <ul>
-                        {appState.cities.map(city =>
-                          <li className="bg-secondary city-control border" key={city.id}>
-                            <label className="form-control" onClick={e => handleStateCompletion(e, city)}>
-                              <input type="checkbox" name="city" value={`full`} defaultChecked={"checked"} />
-                              {city.region}
-                            </label>
-                          </li>
-                        )}
-                      </ul>
-                      {/* --- End Cities --- */}
-                    </details>
-                  </li>
-                )}
-              </ul>
-              {/* --- End States --- */}
-            </details>
-          </li>
-        )}
-        {/* --- End Countries --- */}
-      </ul>
+      <div className="tree">
+        <List parentNode={appState.regions.root} />
+      </div>
     </div >
   )
 }

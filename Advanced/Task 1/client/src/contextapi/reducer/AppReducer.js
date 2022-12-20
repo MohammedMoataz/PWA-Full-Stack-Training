@@ -8,7 +8,7 @@ export const AppReducer = (state, action) => {
                 regions: action.payload
             }
 
-        case appActionType.GET_ALL_COUNTRIES:
+        case appActionType.GET_COUNTRIES:
             return {
                 ...state,
                 countries: action.payload
@@ -24,6 +24,30 @@ export const AppReducer = (state, action) => {
             return {
                 ...state,
                 cities: action.payload
+            }
+
+        case appActionType.ADD_COUNTRY:
+        case appActionType.UPDATE_COUNTRY:
+        case appActionType.GET_COUNTRY:
+            return {
+                ...state,
+                country: action.payload
+            }
+
+        case appActionType.ADD_STATE:
+        case appActionType.UPDATE_STATE:
+        case appActionType.GET_STATE:
+            return {
+                ...state,
+                state: action.payload
+            }
+
+        case appActionType.ADD_CITY:
+        case appActionType.UPDATE_CITY:
+        case appActionType.GET_CITY:
+            return {
+                ...state,
+                city: action.payload
             }
 
         default:

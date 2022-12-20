@@ -1,249 +1,195 @@
 /* eslint-disable jsx-a11y/no-access-key */
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import * as AppActionType from "../../contextapi/action/AppAction"
+import { AppContext } from "../../contextapi/context/AppContext"
 import { getAllByParentId } from "../../apis/region"
 import { Panel } from "./panel"
-import "./admin.css"
+import { Region } from "./region"
+import { Button } from "./button"
+import "./css/admin.css"
 
 export const Admin = () => {
     const navigate = useNavigate()
 
-    const [country, setCountry] = useState({})
-    const [state, setState] = useState({})
-    const [city, setCity] = useState({})
+    const { appState, appDispatch } = useContext(AppContext)
 
-    const [countries, setCountries] = useState([])
-    const [states, setStates] = useState([])
-    const [cities, setCities] = useState([])
-
+    //  panel to add/update specific country/state/city
     const [panel, setPanel] = useState(<></>)
-    const [showState, setShowState] = useState(false)
-    const [showCity, setShowCity] = useState(false)
 
+    //  get all countries in the first rendering
     useEffect(() => {
         getCountries()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
+    //  reset state if country has changed and get current country states
     useEffect(() => {
-        if (country.id) {
-            getStates(country.id)
-            setShowState(true)
-        }
-        if (state.id) {
-            getCities(state.id)
-        }
-    }, [country, state])
+        if (appState.country.id) {
+            getStates(appState.country.id)
 
-    const goToRegions = () => navigate('/regions')
+            appDispatch({
+                type: AppActionType.GET_STATE,
+                payload: {}
+            })
+            appDispatch({
+                type: AppActionType.GET_CITY,
+                payload: {}
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [appState.country])
+    //  get current state cities
+    useEffect(() => {
+        if (appState.state.id) getCities(appState.state.id)
 
-    //  to get countries if state not rendered
-    const reload = async () => {
-        getCountries()
-        setShowState(false)
-        setShowCity(false)
-    }
+        appDispatch({
+            type: AppActionType.GET_CITY,
+            payload: {}
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [appState.state])
+
+    /**
+     * General function to get regions from server
+     * 
+     * @param {Int} parent_id 
+     * @param {AppActionType} type 
+     * @returns children regions for parent region that has id = parent_id
+     */
+    const getRegions = async (parent_id, type) => await getAllByParentId(parent_id)
+        .then(res => appDispatch({
+            type,
+            payload: res.data.getAllByParentId
+                .sort((a, b) => a.region > b.region ? 1 : -1)
+        }))
+        .catch(err => console.error(err))
 
     //  get all countries
-    const getCountries = async () => await getAllByParentId(1)
-        .then(res => setCountries(res.data.getAllByParentId))
-        .catch(err => console.error(err))
-
+    const getCountries = async () => await getRegions(appState.root.id, AppActionType.GET_COUNTRIES)
     //  get states of the selected country
-    const getStates = async (country_id) => await getAllByParentId(country_id)
-        .then(res => setStates(res.data.getAllByParentId))
-        .catch(err => console.error(err))
-
+    const getStates = async () => await getRegions(appState.country.id, AppActionType.GET_STATES)
     //  get cities of the selected state
-    const getCities = async (state_id) => await getAllByParentId(state_id)
-        .then(res => setCities(res.data.getAllByParentId))
-        .catch(err => console.error(err))
+    const getCities = async () => await getRegions(appState.state.id, AppActionType.GET_CITIES)
 
+
+    /*
+     * functions to show panel to add/update specific country/state/city
+     */
+
+    //  show panel to add country
     const addCountry = () => setPanel(<Panel
-        region={{ parent_id: 1 }}
+        region={{
+            parent_id: 1,
+            name: ""
+        }}
         placeholder={"Country Name"}
-        value={null}
         action={"Add"}
+        dispatch={getCountries}
         closePanel={() => setPanel(<></>)}
     />)
-
+    //  show panel to update country
     const updateCountry = () => setPanel(<Panel
-        region={{ id: country.id }}
+        region={appState.country}
         placeholder={"Country Name"}
-        value={country.name}
         action={"Update"}
+        dispatchType={AppActionType.GET_COUNTRY}
+        dispatch={getCountries}
         closePanel={() => setPanel(<></>)}
     />)
-
+    //  show panel to add state
     const addState = () => setPanel(<Panel
-        region={{ parent_id: country.id }}
+        region={{
+            parent_id: appState.country.id,
+            name: ""
+        }}
         placeholder={"State Name"}
-        value={null}
         action={"Add"}
+        dispatch={getStates}
         closePanel={() => setPanel(<></>)}
     />)
-
+    //  show panel to update state
     const updateState = () => setPanel(<Panel
-        region={{ id: state.id }}
+        region={appState.state}
         placeholder={"State Name"}
-        value={state.name}
         action={"Update"}
+        dispatchType={AppActionType.GET_STATE}
+        dispatch={getStates}
         closePanel={() => setPanel(<></>)}
     />)
-
+    //  show panel to add city
     const addCity = () => setPanel(<Panel
-        region={{ parent_id: state.id }}
+        region={{
+            parent_id: appState.state.id,
+            name: ""
+        }}
         placeholder={"City Name"}
-        value={null}
         action={"Add"}
+        dispatch={getCities}
+        closePanel={() => setPanel(<></>)}
+    />)
+    //  show panel to update city
+    const updateCity = () => setPanel(<Panel
+        region={appState.city}
+        placeholder={"City Name"}
+        action={"Update"}
+        dispatchType={AppActionType.GET_CITY}
+        dispatch={getCities}
         closePanel={() => setPanel(<></>)}
     />)
 
-    const updateCity = () => setPanel(<Panel
-        region={{ id: city.id }}
-        placeholder={"City Name"}
-        value={city.name}
-        action={"Update"}
-        closePanel={() => setPanel(<></>)}
-    />)
+
+    //  Navigate to User component
+    const goToRegions = () => navigate('/regions')
 
     return (
         <div className="container">
             <div className="top-btn">
-                <button className="bg-dark text-light" onClick={reload}>Reload</button>
-                <button className="bg-dark text-light" onClick={goToRegions}>Go to Regions</button>
+                <Button
+                    className="bg-dark text-light"
+                    action={"Go to Regions"}
+                    type={"button"}
+                    handleAction={goToRegions}
+                />
             </div>
 
             <div className="add-country">
-                <button
-                    className="bg-light text-dark"
-                    type="button"
-                    onClick={addCountry}
-                >
-                    add Country
-                </button>
+                <Button
+                    action={"Add Country"}
+                    handleAction={addCountry}
+                    type={"button"}
+                />
             </div>
 
-            <form className="region-form" >
-                <select
-                    className="bg-light text-dark"
-                    onChange={e => {
-                        setCountry({
-                            id: e.target.options[e.target.options.selectedIndex]
-                                .getAttribute("accessKey"),
-                            name: e.currentTarget.value
-                        })
-                        setShowCity(false)
-                    }}>
-                    <option>Select Country</option>
-                    {countries.map(country =>
-                        <option
-                            accessKey={country.id}
-                            key={country.id}
-                        >
-                            {country.region}
-                        </option>
-                    )}
-                </select>
-                {country.id
-                    ? <div className="action-btns">
-                        <button
-                            className="bg-light text-secondaey"
-                            type="button"
-                            onClick={addState}
-                        >
-                            add
-                        </button>
-                        <button
-                            className="bg-light text-secondaey"
-                            type="button"
-                            onClick={updateCountry}
-                        >
-                            update
-                        </button>
-                    </div>
-                    : null
-                }
-            </form>
+            <Region
+                dispatchType={AppActionType.GET_COUNTRY}
+                optionHeader={"Select Country"}
+                regions={appState.countries}
+                region={appState.country}
+                handleAddChild={addState}
+                handleUpdate={updateCountry}
+            />
 
-            {showState
-                ? <form className="region-form" >
-                    <select
-                        className="bg-light text-dark"
-                        onChange={e => {
-                            setState({
-                                id: e.target.options[e.target.options.selectedIndex]
-                                    .getAttribute("accessKey"),
-                                name: e.currentTarget.value
-                            })
-                            setShowCity(true)
-                        }}>
-                        <option>Select State</option>
-                        {states.map(state =>
-                            <option
-                                accessKey={state.id}
-                                key={state.id}
-                            >
-                                {state.region}
-                            </option>
-                        )}
-                    </select>
-                    {state.id
-                        ? <div className="action-btns">
-                            <button
-                                className="bg-light text-secondaey"
-                                type="button"
-                                onClick={addCity}
-                            >
-                                add
-                            </button>
-                            <button
-                                className="bg-light text-secondaey"
-                                type="button"
-                                onClick={updateState}
-                            >
-                                update
-                            </button>
-                        </div>
-                        : null
-                    }
-                </form>
-                : null
-            }
+            {appState.country.id
+                ? <Region
+                    dispatchType={AppActionType.GET_STATE}
+                    optionHeader={"Select State"}
+                    regions={appState.states}
+                    region={appState.state}
+                    handleAddChild={addCity}
+                    handleUpdate={updateState}
+                />
+                : null}
 
-            {showCity
-                ? <form className="region-form" >
-                    <select
-                        className="bg-light text-dark"
-                        onChange={e => setCity({
-                            id: e.target.options[e.target.options.selectedIndex]
-                                .getAttribute("accessKey"),
-                            name: e.currentTarget.value
-                        })}>
-                        <option>Select City</option>
-                        {cities.map(city =>
-                            <option
-                                accessKey={city.id}
-                                key={city.id}
-                            >
-                                {city.region}
-                            </option>
-                        )}
-                    </select>
-                    {city.id
-                        ? <div className="action-btns">
-                            <button
-                                className="bg-light text-secondaey"
-                                type="button"
-                                onClick={updateCity}
-                            >
-                                update
-                            </button>
-                        </div>
-                        : null}
-                </form>
-                : null
-            }
+            {appState.state.id
+                ? <Region
+                    dispatchType={AppActionType.GET_CITY}
+                    optionHeader={"Select City"}
+                    regions={appState.cities}
+                    region={appState.city}
+                    handleUpdate={updateCity}
+                />
+                : null}
 
             {panel}
         </div>

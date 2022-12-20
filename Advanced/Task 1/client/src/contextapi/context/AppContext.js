@@ -10,9 +10,13 @@ export const AppContext = createContext({
 export const AppProvider = props => {
     const appInitialState = {
         root: { id: 1 },
+        regions: {},
         countries: [],
         states: [],
-        cities: []
+        cities: [],
+        country: {},
+        state: {},
+        city: {}
     }
 
     const [appState, appDispatch] = useReducer(AppReducer, appInitialState)
