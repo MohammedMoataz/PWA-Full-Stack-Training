@@ -26,25 +26,19 @@ export const AppReducer = (state, action) => {
                 cities: action.payload
             }
 
-        case appActionType.ADD_COUNTRY:
-        case appActionType.UPDATE_COUNTRY:
-        case appActionType.GET_COUNTRY:
+        case appActionType.SINGLE_COUNTRY:
             return {
                 ...state,
                 country: action.payload
             }
 
-        case appActionType.ADD_STATE:
-        case appActionType.UPDATE_STATE:
-        case appActionType.GET_STATE:
+        case appActionType.SINGLE_STATE:
             return {
                 ...state,
                 state: action.payload
             }
 
-        case appActionType.ADD_CITY:
-        case appActionType.UPDATE_CITY:
-        case appActionType.GET_CITY:
+        case appActionType.SINGLE_CITY:
             return {
                 ...state,
                 city: action.payload

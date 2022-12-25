@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-access-key */
 import React, { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -29,11 +28,11 @@ export const Admin = () => {
             getStates(appState.country.id)
 
             appDispatch({
-                type: AppActionType.GET_STATE,
+                type: AppActionType.SINGLE_STATE,
                 payload: {}
             })
             appDispatch({
-                type: AppActionType.GET_CITY,
+                type: AppActionType.SINGLE_CITY,
                 payload: {}
             })
         }
@@ -44,7 +43,7 @@ export const Admin = () => {
         if (appState.state.id) getCities(appState.state.id)
 
         appDispatch({
-            type: AppActionType.GET_CITY,
+            type: AppActionType.SINGLE_CITY,
             payload: {}
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +92,7 @@ export const Admin = () => {
         region={appState.country}
         placeholder={"Country Name"}
         action={"Update"}
-        dispatchType={AppActionType.GET_COUNTRY}
+        dispatchType={AppActionType.SINGLE_COUNTRY}
         dispatch={getCountries}
         closePanel={() => setPanel(<></>)}
     />)
@@ -113,7 +112,7 @@ export const Admin = () => {
         region={appState.state}
         placeholder={"State Name"}
         action={"Update"}
-        dispatchType={AppActionType.GET_STATE}
+        dispatchType={AppActionType.SINGLE_STATE}
         dispatch={getStates}
         closePanel={() => setPanel(<></>)}
     />)
@@ -133,7 +132,7 @@ export const Admin = () => {
         region={appState.city}
         placeholder={"City Name"}
         action={"Update"}
-        dispatchType={AppActionType.GET_CITY}
+        dispatchType={AppActionType.SINGLE_CITY}
         dispatch={getCities}
         closePanel={() => setPanel(<></>)}
     />)
@@ -162,7 +161,7 @@ export const Admin = () => {
             </div>
 
             <Region
-                dispatchType={AppActionType.GET_COUNTRY}
+                dispatchType={AppActionType.SINGLE_COUNTRY}
                 optionHeader={"Select Country"}
                 regions={appState.countries}
                 region={appState.country}
@@ -172,7 +171,7 @@ export const Admin = () => {
 
             {appState.country.id
                 ? <Region
-                    dispatchType={AppActionType.GET_STATE}
+                    dispatchType={AppActionType.SINGLE_STATE}
                     optionHeader={"Select State"}
                     regions={appState.states}
                     region={appState.state}
@@ -183,7 +182,7 @@ export const Admin = () => {
 
             {appState.state.id
                 ? <Region
-                    dispatchType={AppActionType.GET_CITY}
+                    dispatchType={AppActionType.SINGLE_CITY}
                     optionHeader={"Select City"}
                     regions={appState.cities}
                     region={appState.city}
