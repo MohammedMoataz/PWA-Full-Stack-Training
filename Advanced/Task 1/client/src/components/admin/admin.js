@@ -158,7 +158,7 @@ export const Admin = () => {
                     handleAction={addCountry}
                     type={"button"}
                 />
-            </div>
+            </div>  
 
             <Region
                 dispatchType={AppActionType.SINGLE_COUNTRY}

@@ -3,7 +3,7 @@ import React from "react"
 import { List } from "./list"
 import { Button } from "./button"
 
-export const Region = props => {
+export const Region = (props) => {
     const {
         dispatchType,
         optionHeader,

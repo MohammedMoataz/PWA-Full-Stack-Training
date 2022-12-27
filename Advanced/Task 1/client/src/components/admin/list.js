@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 
 import { AppContext } from "../../contextapi/context/AppContext"
 
-export const List = props => {
+export const List = (props) => {
     // eslint-disable-next-line no-unused-vars
     const { appState, appDispatch } = useContext(AppContext)
 

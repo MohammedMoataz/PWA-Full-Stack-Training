@@ -20,7 +20,7 @@ export const getAll = async () => {
  * @param {Integer} parentId parent region id
  * @returns all regions that inside in this region
  */
-export const getAllByParentId = async parentId => {
+export const getAllByParentId = async (parentId) => {
   let query = `{
     getAllByParentId(parent_id: ${parentId}){
       id
@@ -73,12 +73,13 @@ export const update = async (region, id) => {
 }
 
 
+//  Fetch API Function
 /**
  * 
  * @param {String} body a query or mutation passing from user
  * @returns response from server after excuting body - json object
  */
-const fetchApi = async body => {
+const fetchApi = async (body) => {
   return await fetch('http://localhost:4000/graphql', {
     method: 'POST',
     headers: { "Content-Type": "application/json" },

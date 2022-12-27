@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { AppContext } from "../../contextapi/context/AppContext"
 import * as AppActionType from "../../contextapi/action/AppAction"
 
-export const List = props => {
+export const List = (props) => {
     const { parentNode } = props
 
     const { appState, appDispatch } = useContext(AppContext)
@@ -59,11 +59,9 @@ export const List = props => {
     const handleParent = (regions, checked, key) => {
         if (Object.keys(regions.children).includes(key)) {
             if (checked) {
-
                 regions.length++
                 regions.statue = regions.length === 0 ? "full" : "not empty"
             } else {
-
                 regions.length--
                 regions.statue = regions.length === Object.keys(regions.children).length * -1 ? "empty" : "not empty"
             }
