@@ -65,9 +65,6 @@ export const List = (props) => {
                 regions.length--
                 regions.statue = regions.length === Object.keys(regions.children).length * -1 ? "empty" : "not empty"
             }
-            console.log(regions)
-            console.log(Object.keys(regions.children).length * -1)
-
         } else {
             for (let childKey in regions.children)
                 handleParent(regions.children[childKey], checked, key)

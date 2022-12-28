@@ -27,7 +27,9 @@ export const User = () => {
           type: AppActionType.GET_ALL,
           payload: regions
         })
+        return regions
       })
+      .then(res => console.log(res))
       .catch(err => console.error(err))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
