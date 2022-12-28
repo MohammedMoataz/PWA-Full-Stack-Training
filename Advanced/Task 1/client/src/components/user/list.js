@@ -12,9 +12,9 @@ export const List = (props) => {
      * recursion function to handle children regions for the changed reigon
      * 
      * @param {Object} regions regions object in the appState
-     * @param {boolean} checked if the region is checked or unchecked
-     * @param {Integer} key the id of changed region
-     * @param {Integer} length the number of children the changed region has
+     * @param {Boolean} checked if the region is checked or unchecked
+     * @param {Number} key the id of changed region
+     * @param {Number} length the number of children the changed region has
      */
     const handleChildren = (regions, checked, key, length) => {
         if (Object.keys(regions.children).includes(key)) {
@@ -53,8 +53,8 @@ export const List = (props) => {
      * recursion function to handle parent region for the changed region
      * 
      * @param {Object} regions regions object in the appState
-     * @param {boolean} checked if the region is checked or unchecked
-     * @param {Integer} key the id of changed region
+     * @param {Boolean} checked if the region is checked or unchecked
+     * @param {Number} key the id of changed region
      */
     const handleParent = (regions, checked, key) => {
         if (Object.keys(regions.children).includes(key)) {

@@ -17,7 +17,7 @@ export const getAll = async () => {
 
 /**
  * 
- * @param {Integer} parentId parent region id
+ * @param {Number} parentId parent region id
  * @returns all regions that inside in this region
  */
 export const getAllByParentId = async (parentId) => {
@@ -37,7 +37,7 @@ export const getAllByParentId = async (parentId) => {
 /**
  * 
  * @param {String} region name of new region
- * @param {Integer} parent_id parent region id
+ * @param {Number} parent_id parent region id
  * @returns the new added region
  */
 export const add = async (region, parent_id) => {
@@ -58,7 +58,7 @@ export const add = async (region, parent_id) => {
 /**
  * 
  * @param {String} region region name
- * @param {Integer} id region id 
+ * @param {Number} id region id 
  * @returns if the region updated or not
  */
 export const update = async (region, id) => {

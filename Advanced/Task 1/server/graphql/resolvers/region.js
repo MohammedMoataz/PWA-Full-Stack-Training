@@ -7,7 +7,7 @@ export default {
     //  Region Queries
     /**
      * 
-     * @param {Integer} args parent region id
+     * @param {Number} args parent region id
      * @returns all regions whose parent region id = parent_id, except the 'root' record witch its id = p_id = 1
      */
     getAllByParentId: async (args, req) => {
@@ -37,7 +37,7 @@ export default {
     /**
      * 
      * @param {Object} args - data of the new region
-     * @param {Integer} args.parent_id - new region's parent id
+     * @param {Number} args.parent_id - new region's parent id
      * @param {String} args.region - new region name
      * @returns new added region
      */
@@ -57,7 +57,7 @@ export default {
     /**
      * 
      * @param {Object} args - data of the region to be updated
-     * @param {Integer} args.id - region id
+     * @param {Number} args.id - region id
      * @param {String} args.region - region name
      * @returns if region updated or not
      */

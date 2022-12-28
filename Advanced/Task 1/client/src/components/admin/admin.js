@@ -52,7 +52,7 @@ export const Admin = () => {
     /**
      * General function to get regions from server
      * 
-     * @param {Int} parent_id 
+     * @param {Number} parent_id 
      * @param {AppActionType} type 
      * @returns children regions for parent region that has id = parent_id
      */
