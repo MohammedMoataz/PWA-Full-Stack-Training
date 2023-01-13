@@ -1,0 +1,115 @@
+{
+  "options": [
+    {
+      "index": 1,
+      "option": "أين مكانكم ؟",
+      "keywords": ["فسر", "مكان"],
+      "response_index": 1
+    },
+    {
+      "index": 2,
+      "option": "أريد حجز غرفة",
+      "keywords": ["فسر", "حجز"],
+      "response_index": 2
+    },
+    {
+      "index": 3,
+      "option": "أريد أن أعرف أسعار الغرف",
+      "keywords": ["فسر", "سعر"],
+      "response_index": 3
+    },
+    {
+      "index": 4,
+      "option": "الاسكندرية",
+      "keywords": ["مكان"],
+      "response_index": 4
+    },
+    {
+      "index": 5,
+      "option": "الغردقة",
+      "keywords": ["مكان"],
+      "response_index": 4
+    },
+    {
+      "index": 6,
+      "option": "شرم الشيخ",
+      "keywords": ["مكان"],
+      "response_index": 4
+    },
+    {
+      "index": 7,
+      "option": "أريد حجز غرفة فردية",
+      "keywords": ["حجز"],
+      "response_index": 7
+    },
+    {
+      "index": 8,
+      "option": "أريد حجز غرفة زوجية",
+      "keywords": ["حجز"],
+      "response_index": 7
+    },
+    {
+      "index": 9,
+      "option": "أريد أن أعرف أسعار الغرفة الفردية",
+      "keywords": ["سعر"],
+      "response_index": 5
+    },
+    {
+      "index": 10,
+      "option": "أريد أن أعرف أسعار الغرفة الزوجية",
+      "keywords": ["سعر"],
+      "response_index": 6
+    }
+  ],
+  "responses": [
+    {
+      "index": 1,
+      "response": "نحن نتواجد في الاسكندرية والغردقة وشرم الشيخ.\t\nأين تريد أن تقيم؟",
+      "keywords": ["مكان"],
+      "next_options_indexes": [4, 5, 6]
+    },
+    {
+      "index": 2,
+      "response": "أتريد حجز غرفة فردية ام زوجية؟",
+      "keywords": ["حجز"],
+      "next_options_indexes": [7, 8]
+    },
+    {
+      "index": 3,
+      "response": "أتريد معرفة أسعار الغرف الفردية ام الزوجية؟",
+      "keywords": ["سعر"],
+      "next_options_indexes": [9, 10]
+    },
+    {
+      "index": 4,
+      "response": "أتريد معرفة أسعار الغرف ام تريد ان تحجز غرفة؟",
+      "keywords": ["سعر", "حجز"],
+      "next_options_indexes": [2, 3]
+    },
+    {
+      "index": 5,
+      "response": "أسعار الغرف الفردية تبدأ من 500 جنية لليلة",
+      "keywords": ["سعر"],
+      "next_options_indexes": [7, 10, 8]
+    },
+    {
+      "index": 6,
+      "response": "أسعار الغرف الزوجية تبدأ من 750 جنية لليلة",
+      "keywords": ["سعر"],
+      "next_options_indexes": [8, 9, 7]
+    },
+    {
+      "index": 7,
+      "response": "تم الحجز",
+      "keywords": ["حجز"],
+      "next_options_indexes": []
+    }
+  ],
+  "messages": [
+    {
+      "msg": "مرحبا بك, كيف يمكنني خدمتك ؟",
+      "type": "bot"
+    }
+  ],
+  "keywords": ["فسر"]
+}

@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react"
 
 import { AppReducer } from "../reducer/AppReducer"
+import data from "../../data.json"
 
 export const AppContext = createContext({
 	appState: {},
@@ -9,37 +10,12 @@ export const AppContext = createContext({
 
 export const AppProvider = (props) => {
 	const appInitialState = {
-		options: [
-			{
-				option: "أريد حجز غرفة",
-				keywords: ["فسر", "حجز"]
-			},
-			{
-				option: "أريد أن أعرف أسعار الغرف",
-				keywords: ["فسر", "سعر"]
-			},
-			{
-				option: "أين مكانكم ؟",
-				keywords: ["فسر", "مكان"]
-			}
-		],
-		messages: [
-			{
-				msg: "مرحبا بك, كيف يمكنني خدمتك ؟",
-				type: "bot"
-			}
-		],
-		responses: [
-			{
-				response: "نحن نتواجد في الاسكندرية والغردقة",
-				keywords: ["مكان"]
-			},
-			{
-				response: "الغرفة الفردي تكلف 500 جنية والزوجي تكلف 750 جنية",
-				keywords: ["سعر"]
-			}
-		],
-		keywords: ["فسر"]
+		options: data.options
+			.filter(op => op.keywords
+				.includes("فسر")),
+		responses: data.responses,
+		messages: data.messages,
+		keywords: data.keywords
 	}
 
 	const [appState, appDispatch] = useReducer(AppReducer, appInitialState)

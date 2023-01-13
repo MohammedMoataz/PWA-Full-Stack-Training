@@ -1,0 +1,83 @@
+.pop-up-overlay {
+  background-color: #01041a8f;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.pop-up {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f1f1f1;
+  width: 70%;
+  left: 15%;
+  top: 35%;
+  max-width: 90%;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0px 15px 0px #b5ddff8a;
+}
+
+.pop-up > .pop-up-header {
+  position: relative;
+  padding: 7% 3%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pop-up > .pop-up-header > .pop-up-title {
+  position: relative;
+  width: 90%;
+  text-align: center;
+  font-weight: 600;
+}
+
+.pop-up > .pop-up-header > .pop-up-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 3%;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: #111111;
+  font-size: 15pt;
+  font-weight: bolder;
+  cursor: pointer;
+  line-height: 0.5;
+  padding: 3%;
+}
+
+.pop-up > .pop-up-header > .pop-up-close:hover {
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.pop-up .buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.pop-up-action {
+  width: 50%;
+  padding: 2%;
+  font-size: 14pt;
+  border: none;
+  background-color: #205295;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.pop-up .buttons .retry:hover {
+  background-color: #209552;
+}
+
+.pop-up .buttons .close:hover {
+  background-color: #952052;
+}

@@ -8,7 +8,7 @@ export const Form = () => {
   const { appState, appDispatch } = useContext(AppContext)
 
   useEffect(() => {
-    console.log(appState.messages)
+    console.log("Messages: ", appState.messages)
   }, [appState])
 
   const handleSubmit = (e) => {
@@ -41,3 +41,26 @@ export const Form = () => {
     </div>
   )
 }
+
+
+/*
+
+  .split(" ")
+      .map(word => word.length > 3
+        ? word
+          .replaceAll("است", "")
+          .replaceAll("ي", "ا")
+          .replaceAll("ون", "")
+          .replaceAll("ين", "")
+          .replaceAll("ة", "")
+          .replaceAll("ه", "")
+          .replaceAll("ال", "")
+          .replaceAll("كم", "")
+          .replaceAll("أسعار", "سعر")
+          .replaceAll("أ", "")
+        : word
+
+  const checkKeyword = (keyword) => appState.keywords.includes(keyword)
+op.keywords.some(checkKeyword)
+
+*/

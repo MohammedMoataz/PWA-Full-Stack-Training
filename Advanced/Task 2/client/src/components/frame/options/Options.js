@@ -1,56 +1,42 @@
 import { useContext } from "react"
 
-import { UPDATE_MESSAGES } from "../../../contextapi/action/AppAction"
+import * as appActionType from "../../../contextapi/action/AppAction"
 import { AppContext } from "../../../contextapi/context/AppContext"
+import data from "../../../data.json"
 
 export const Options = () => {
 	const { appState, appDispatch } = useContext(AppContext)
 
-	const handleClick = (e) => {
-		let newMsg = { msg: e.target.outerText, type: "sender" }
+	const handleClick = (option) => {
+		appState.messages.push({ msg: option.option, type: "sender" })
 
-		appState.messages.push(newMsg)
+		let response = appState.responses
+			.find(res => res.index === option.response_index)
+		appState.messages.push({ msg: response.response, type: "bot" })
+
+		appState.options = data.options
+			.filter(op => response.next_options_indexes
+				.includes(op.index))
 
 		appDispatch({
-			type: UPDATE_MESSAGES,
+			type: appActionType.UPDATE_MESSAGES,
 			payload: appState.messages
 		})
 
-		let newKeywords = newMsg.msg
-			.split(" ")
-			.map(word => word.length > 3
-				? word
-					.replaceAll("است", "")
-					.replaceAll("ي", "ا")
-					.replaceAll("ون", "")
-					.replaceAll("ين", "")
-					.replaceAll("ة", "")
-					.replaceAll("ه", "")
-					.replaceAll("ال", "")
-					.replaceAll("كم", "")
-					.replaceAll("أسعار", "سعر")
-					.replaceAll("أ", "")
-				: word
-			)
-
-		let response = appState.responses.map(res => res.keywords.some(checkKeyword) ? res : res)
-		appState.messages.push({ msg: response.find(res => newKeywords.includes(res.keywords[0])).response, type: "bot" })
-
 		appDispatch({
-			type: UPDATE_MESSAGES,
-			payload: appState.messages
+			type: appActionType.UPDATE_OPTIONS,
+			payload: appState.options
 		})
 	}
-
-	const checkKeyword = (keyword) => appState.keywords.includes(keyword)
 
 	return <div className="options">
 		<p>Options:</p>
 		<ul>
-			{appState.options.map((op, index) => op.keywords.some(checkKeyword)
-				? <li key={index}><button onClick={handleClick}>{op.option}</button></li>
-				: null
-			)}
+			{appState.options
+				.map((op) => <li key={op.index}>
+					<button onClick={e => handleClick(op)}>{op.option}</button>
+				</li>)
+			}
 		</ul>
 	</div>
 

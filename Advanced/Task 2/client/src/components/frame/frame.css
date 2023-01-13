@@ -11,6 +11,7 @@ ul > li {
 .frame {
   width: 60%;
   margin: 5% auto;
+  position: relative;
   background-color: #f1f1f1;
   overflow: hidden;
   border-radius: 15px;
