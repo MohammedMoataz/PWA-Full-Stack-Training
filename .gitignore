@@ -25,3 +25,5 @@ yarn-error.log*
 # materials
 *.pdf
 *.mp4
+.zip
+.mkv
