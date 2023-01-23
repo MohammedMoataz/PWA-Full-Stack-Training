@@ -7,7 +7,14 @@ import { Button } from "./button"
 import "./css/panel.css"
 
 export const Panel = (props) => {
-  let { region, placeholder, action, dispatchType, dispatch, closePanel } = props
+  let {
+    region,
+    placeholder,
+    action,
+    dispatchType,
+    dispatch,
+    closePanel
+  } = props
 
   // eslint-disable-next-line no-unused-vars
   const { appState, appDispatch } = useContext(AppContext)
@@ -18,22 +25,22 @@ export const Panel = (props) => {
 
     action === "Add"
       ? await add(name, region.parent_id)
-          .then(dispatch)
-          .then(closePanel)
-          .catch((err) => console.error(err))
+        .then(dispatch)
+        .then(closePanel)
+        .catch((err) => console.error(err))
       : await update(name, region.id)
-          .then(() =>
-            appDispatch({
-              type: dispatchType,
-              payload: {
-                id: region.id,
-                name,
-              },
-            })
-          )
-          .then(dispatch)
-          .then(closePanel)
-          .catch((err) => console.error(err))
+        .then(() =>
+          appDispatch({
+            type: dispatchType,
+            payload: {
+              id: region.id,
+              name,
+            },
+          })
+        )
+        .then(dispatch)
+        .then(closePanel)
+        .catch((err) => console.error(err))
   }
 
   return (
