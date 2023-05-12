@@ -26,9 +26,9 @@ app.listen(PORT, () => {
 
 // Global Error Handler. IMPORTANT function params MUST start with err
 app.use((err, req, res, next) => {
-    console.log(err.stack);
-    console.log(err.name);
-    console.log(err.code);
+    console.log(err.stack)
+    console.log(err.name)
+    console.log(err.code)
 
     res.status(500).json({
         message: err,
